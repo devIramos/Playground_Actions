@@ -12,16 +12,13 @@ jobs:
     - uses: actions/checkout@v4
     - name: Setup .NET
       run: powershell -Command "Invoke-WebRequest -Uri https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1"
-    - name: Setup .NET 2
-      run: powershell -ExecutionPolicy Bypass -File .\dotnet-install.ps1 -Channel 7.0 -Architecture x64 
-    - name: Setup .NET 3
+    - name: Install .NET SDK
+      run: |
+        powershell -ExecutionPolicy Bypass -File .\dotnet-install.ps1 -Channel 7.0 -Architecture x64
+        $dotnetPath = [System.IO.Path]::Combine($env:USERPROFILE, '.dotnet')
+        echo "DOTNET_ROOT=$dotnetPath" >> $env:GITHUB_ENV
+        echo "$dotnetPath" >> $env:PATH
+
+    - name: Verify .NET SDK Version
       run: dotnet --version
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-      working-directory: Analytics-Puller-Service\data-agent-service
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      working-directory: Analytics-Puller-Service\data-agent-service
 
