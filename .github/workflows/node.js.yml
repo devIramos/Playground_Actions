@@ -21,15 +21,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Set environment variable for app directory
+      run: echo "APP_DIR=Pass-List-App/app" >> $GITHUB_ENV
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install --package-lock-only
-      working-directory: Pass-List-App/app
+      working-directory: ${{ env.APP_DIR }}
     - run: npm ci
-      working-directory: Pass-List-App/app
+      working-directory: ${{ env.APP_DIR }}
     - run: npm run build --if-present
-      working-directory: Pass-List-App/app
+      working-directory: ${{ env.APP_DIR }}
     - run: sudo npm test
-      working-directory: Pass-List-App/app
+      working-directory: ${{ env.APP_DIR }}
