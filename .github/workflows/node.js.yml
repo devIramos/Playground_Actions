@@ -27,13 +27,11 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install --package-lock-only
-      working-directory: ${{ env.APP_DIR }}
-    - run: npm ci
-      working-directory: ${{ env.APP_DIR }}
-    - run: npm run build --if-present
-      working-directory: ${{ env.APP_DIR }}
-    - run: sudo yarn test --coverage --coverageDirectory='covertura_pruebas'
+    - run: |
+          npm install --package-lock-only
+          npm ci
+          npm run build --if-present
+          sudo yarn test --coverage --coverageDirectory='covertura_pruebas'
       working-directory: ${{ env.APP_DIR }}
 
     - name: Upload resource count artifact
