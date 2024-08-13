@@ -11,9 +11,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      run: powershell -Command "Invoke-WebRequest -Uri https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.ps1 -OutFile dotnet-install.ps1"
+    - name: Setup .NET 2
+      run: powershell -ExecutionPolicy Bypass -File .\dotnet-install.ps1 -Channel 7.0 -Architecture x64 
+    - name: Setup .NET 3
+      run: dotnet --version
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
