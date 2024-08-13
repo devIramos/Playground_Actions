@@ -33,5 +33,11 @@ jobs:
       working-directory: ${{ env.APP_DIR }}
     - run: npm run build --if-present
       working-directory: ${{ env.APP_DIR }}
-    - run: sudo npm test
+    - run: sudo yarn test --coverage --coverageDirectory='covertura_pruebas'
       working-directory: ${{ env.APP_DIR }}
+
+    - name: Upload resource count artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage_Results
+        path: Pass-List-App/app/covertura_pruebas
